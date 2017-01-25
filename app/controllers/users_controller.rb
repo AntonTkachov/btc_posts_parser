@@ -14,7 +14,8 @@ class UsersController < ApplicationController
 
   def get_token_of_page
     @graph = Koala::Facebook::API.new(@user_token)
-    @page = @graph.get_connections("me", "accounts").first
+    @page_token = @graph.get_connections("me", "accounts").first['access_token']
+
   end
 
 end
