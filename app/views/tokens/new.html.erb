@@ -1,2 +1,4 @@
-<p class="alert alert-warning"><%= flash[:message] %></p>
+<% if flash[:message] %>
+  <p class="alert alert-warning center_top"><%= flash[:message] %></p>
+<% end %>
 <%= link_to "Get Token", '/auth/facebook', class: 'btn btn-info btn-lg center' %>
