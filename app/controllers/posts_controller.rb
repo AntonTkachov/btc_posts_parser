@@ -5,14 +5,8 @@ class PostsController < ApplicationController
   end
 
   def create
-    @client = FacebookAPI.new(Rails.application.secrets.page_access_token)
-    if Time.new(*time_parsing(post_params[:time])).to_i > (Time.now + 600).to_i
-      @client.publish_post_by_schedule(post_params[:text], Time.new(*time_parsing(post_params[:time])).to_i)
-      flash[:message] = 'Your post will be published at the scheduled time'
-    else
-      @client.publish_post_immediately(post_params[:text])
-      flash[:message] = 'Your post is published'
-    end
+    client = FacebookAPI.new(Rails.application.secrets.page_access_token)
+    flash[:message] = client.publish_post(post_params[:text], Time.new(*time_parsing(post_params[:time])).to_i)
     redirect_to new_post_path
   end
 

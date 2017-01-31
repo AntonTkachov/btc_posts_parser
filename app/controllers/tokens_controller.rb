@@ -3,7 +3,6 @@ class TokensController < ApplicationController
   end
 
   def create
-    debugger
     Rails.application.secrets.page_access_token = FacebookAPI.new(request.env['omniauth.auth']['credentials']['token']).get_token_of_page
     if Rails.application.secrets.page_access_token.nil?
       flash[:message] = "Something went wrong. Token wasn't saved"
