@@ -13,3 +13,8 @@
     <%= f.submit 'Publish post', class: 'btn btn-default' %>
   <% end %>
 </div>
+
+<%= form_for :news, url: posts_get_news_path do |f| %>
+  <%= f.text_field :link, class: 'form-control', placeholder: 'Link' %>
+  <%= f.submit 'Get News', class: 'btn btn-default' %>
+<% end %>

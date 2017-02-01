@@ -10,6 +10,11 @@ class PostsController < ApplicationController
     redirect_to new_post_path
   end
 
+  def get_news
+    @news_html = ForklogParser.html(news_params[:link])
+    redirect_to posts_get_news_path
+  end
+
   private
   def require_page_token
     redirect_to new_token_path if Rails.application.secrets.page_access_token.nil?
@@ -17,6 +22,10 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:text, :time)
+  end
+
+  def news_params
+    params.require(:news).permit(:link)
   end
 
   def time_parsing(string)
