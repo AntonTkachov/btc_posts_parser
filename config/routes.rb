@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   root to: 'posts#new', via: :get
   get 'auth/facebook', as: 'auth_provider'
   get 'auth/facebook/callback', to: 'tokens#create'
-  get 'posts/get_news'
-  post 'posts/get_news'
+  get 'tokens/get_news'
 
 end
