@@ -6,7 +6,7 @@ class PostsController < ApplicationController
 
   def create
     client = FacebookAPI.new(Rails.application.secrets.page_access_token)
-    flash[:message] = client.publish_post(post_params[:text], Time.new(*time_parsing(post_params[:time])).to_i)
+    flash[:message] = client.publish_post(ForklogParser.parse_news(post_params[:link]), Time.new(*time_parsing(post_params[:time])).to_i)
     redirect_to new_post_path
   end
 
@@ -16,7 +16,7 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:text, :time)
+    params.require(:post).permit(:link, :time)
   end
 
   def time_parsing(string)

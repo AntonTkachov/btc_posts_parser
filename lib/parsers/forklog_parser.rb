@@ -19,19 +19,37 @@ require 'open-uri'
 class ForklogParser
   MAP = {
   "<h1>" => "=====",
-  "</h1>" => "=====",
+  "</h1>" => "=====\n\n",
   "<h3>" => "=",
   "</h3>" => "=\n\n",
   "<p>" => "",
-  "</p>" => "\n\n"
+  "</p>" => "\n\n",
+  "<strong>" => "",
+  "</strong>" => "",
+  /<a.*?>/ => "",
+  "</a>" => "",
+  "<em>" => "",
+  "</em>" => "\n\n",
+  /<section.*?>/ => "",
+  "</section>" => "",
+  /<img.*?>/ => "",
+  /<!-- article.*?>/ => "",
+  "<blockquote>" => "",
+  "</blockquote>" => "",
+  /<span.*?>/ => "",
+  "</span>" => "",
+  /<div.*?>/ => "",
+  "</div>" => "",
+  /<i.*?>/ => "",
+  "</i>" => ""
   }
 
-  def self.html(link)
+  def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))
     text = doc.search('section#article_content').inner_html
     MAP.each do |k,v|
       text = text.gsub(k,v)
     end
-    text
+    text << "Источник: #{link}"
   end
 end
