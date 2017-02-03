@@ -18,10 +18,12 @@ require 'open-uri'
 
 class ForklogParser
   MAP = {
-  "<h1>" => "=====",
-  "</h1>" => "=====\n\n",
-  "<h3>" => "=",
-  "</h3>" => "=\n\n",
+  "<h1>" => "===== ",
+  "</h1>" => " =====\n\n",
+  "<h3>" => "= ",
+  "</h3>" => " =\n\n",
+  "</p>\n<blockquote><p>" => " ",
+  "</p></blockquote>\n<p>" => "\n\n",
   "<p>" => "",
   "</p>" => "\n\n",
   "<strong>" => "",
@@ -34,11 +36,11 @@ class ForklogParser
   "</section>" => "",
   /<img.*?>/ => "",
   /<!-- article.*?>/ => "",
-  "<blockquote>" => "",
-  "</blockquote>" => "",
+  # "<blockquote>" => "",
+  # "</blockquote>" => "",
   /<span.*?>/ => "",
   "</span>" => "",
-  /<div.*?>/ => "",
+  /<div.*>/ => "",
   "</div>" => "",
   /<i.*?>/ => "",
   "</i>" => ""
@@ -50,6 +52,6 @@ class ForklogParser
     MAP.each do |k,v|
       text = text.gsub(k,v)
     end
-    text << "Источник: #{link}"
+    text.sub(/Подписывайтесь на новости Forklog в .*?!\n/, "") << "Источник: #{link}"
   end
 end
