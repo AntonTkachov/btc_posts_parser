@@ -24,8 +24,11 @@ class ForklogParser
   "</h3>" => " =\n\n",
   "</p>\n<blockquote><p>" => " ",
   "</p></blockquote>\n<p>" => "\n\n",
+  /<\/p>\n<blockquote.*>/ => "",
+  /<p>—.*/ => "",
   "<p>" => "",
   "</p>" => "\n\n",
+  /<p.*>/ => "",
   "<strong>" => "",
   "</strong>" => "",
   /<a.*?>/ => "",
@@ -36,14 +39,16 @@ class ForklogParser
   "</section>" => "",
   /<img.*?>/ => "",
   /<!-- article.*?>/ => "",
-  # "<blockquote>" => "",
-  # "</blockquote>" => "",
+  "<blockquote>" => "",
+  "</blockquote>" => "",
   /<span.*?>/ => "",
   "</span>" => "",
   /<div.*>/ => "",
   "</div>" => "",
   /<i.*?>/ => "",
-  "</i>" => ""
+  "</i>" => "",
+  /<script.*?>/ => "",
+  "</script>" => ""
   }
 
   def self.parse_news(link)
