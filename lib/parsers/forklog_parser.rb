@@ -2,43 +2,51 @@ require 'nokogiri'
 require 'open-uri'
 
 class ForklogParser
+  MAP1 = {
+  /<!-- article.*?>/ => "",
+  /<section.*?>/ => "",
+  "</section>" => "",
+  /<a.*?>/ => "",
+  "</a>" => "",
+  /<div.*>/ => "",
+  "</div>" => "",
+  /<i.*?>/ => "",
+  "</i>" => ""
+  }
   MAP = {
   "<h1>" => "===== ",
   "</h1>" => " =====\n\n",
   "<h3>" => "= ",
   "</h3>" => " =\n\n",
-  "</p>\n<blockquote><p>" => " ",
-  "</p></blockquote>\n<p>" => "\n\n",
-  /<\/p>\n<blockquote.*>/ => "",
+  /<span.*?>/ => "",
+  "</span>" => "",
+  "</p><blockquote><p>" => " ",
+  "</p></blockquote><p>" => "\n\n",
+  /<\/p><blockquote.*>/ => "",
   /<p>—.*/ => "",
   "<p>" => "",
   "</p>" => "\n\n",
   /<p.*>/ => "",
   "<strong>" => "",
   "</strong>" => "",
-  /<a.*?>/ => "",
-  "</a>" => "",
   "<em>" => "",
   "</em>" => "\n\n",
-  /<section.*?>/ => "",
-  "</section>" => "",
   /<img.*?>/ => "",
-  /<!-- article.*?>/ => "",
   "<blockquote>" => "",
   "</blockquote>" => "",
-  /<span.*?>/ => "",
-  "</span>" => "",
-  /<div.*>/ => "",
-  "</div>" => "",
-  /<i.*?>/ => "",
-  "</i>" => "",
   /<script.*?>/ => "",
-  "</script>" => ""
+  "</script>" => "",
+  "<b>" => "",
+  "</b>" => ""
   }
 
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))
     text = doc.search('section#article_content').inner_html
+    MAP1.each do |k,v|
+      text = text.gsub(k,v)
+    end
+    text = text.gsub(/^\s*/, "").gsub(/\s*$/, "").gsub("\n", "")
     MAP.each do |k,v|
       text = text.gsub(k,v)
     end
