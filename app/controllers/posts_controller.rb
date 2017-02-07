@@ -6,7 +6,7 @@ class PostsController < ApplicationController
 
   def create
     client = FacebookAPI.new(Rails.application.secrets.page_access_token)
-    flash[:message] = client.publish_post(BitsMediaParser.parse_news(post_params[:link]), Time.new(*time_parsing(post_params[:time])).to_i, post_params[:link])
+    flash[:message] = client.publish_post(parse_news(post_params[:link]), Time.new(*time_parsing(post_params[:time])).to_i, post_params[:link])
     redirect_to new_post_path
   end
 
@@ -23,4 +23,12 @@ class PostsController < ApplicationController
     string.gsub('/', ' ').gsub(':', ' ').split.map { |el| el.to_i }
   end
 
+  def parse_news(link)
+    case link
+    when /forklog\.com/
+      ForklogParser.parse_news(link)
+    when /bits\.media/
+      BitsMediaParser.parse_news(link)
+    end
+  end
 end
