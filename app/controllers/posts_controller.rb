@@ -29,6 +29,8 @@ class PostsController < ApplicationController
       ForklogParser.parse_news(link)
     when /bits\.media/
       BitsMediaParser.parse_news(link)
+    when /bitnovosti\.com/
+      BitnovostiParser.parse_news(link)
     end
   end
 end
