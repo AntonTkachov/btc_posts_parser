@@ -31,6 +31,8 @@ class PostsController < ApplicationController
       BitsMediaParser.parse_news(link)
     when /bitnovosti\.com/
       BitnovostiParser.parse_news(link)
+    when /coinspot\.io/
+      CoinspotParser.parse_news(link)
     end
   end
 end

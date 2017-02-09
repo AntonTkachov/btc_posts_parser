@@ -3,9 +3,15 @@ require 'open-uri'
 
 class BitnovostiParser
   MAP = {
+  /Источник:.*?<\/p>/ => "",
+  /Источники:.*?<\/p>/ => "",
+  /Иллюстрации к статье:.*?<\/p>/ => "",
+  /Автор иллюстраций:.*?<\/p>/ => "",
+  /Автор:.*?<\/p>/ => "",
+  /По материалам:.*?<\/p>/ => "",
   /<h1.*?>/ => "===== ",
   "</h1>" => " =====\n\n",
-  "<h2>" => "= ",
+  /<h2.*?>/ => "= ",
   "</h2>" => " =\n\n",
   "<h3>" => "= ",
   "</h3>" => " =\n\n",
@@ -25,7 +31,7 @@ class BitnovostiParser
   /<\/p><blockquote.*?><p>/ => " ",
   "<p>" => "",
   "</p>" => "\n\n",
-  /<p.*>/ => "",
+  /<p.*?>/ => "",
   "<strong>" => "",
   "</strong>" => "",
   "<em>" => "",
@@ -34,21 +40,34 @@ class BitnovostiParser
   "</blockquote>" => "",
   /<section.*?>/ => "",
   "</section>" => "",
-  "<hr>" => ""
+  "<hr>" => "",
+  "<br>" => "\n",
+  "<u>" => "",
+  "</u>" => "",
+  "<i>" => "",
+  "</i>" => "",
+  "<b>" => "",
+  "</b>" => "",
+  /<div.*>/ => "",
+  "</div>" => ""
   }
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))
     data = doc.search('article').search('p.postmetadata').to_s
-    element = doc.search('article').search('div#jp-post-flair').first.previous_element.previous_element.previous_element
+    graph = doc.search('article').search('div.wp-caption')
+    element = doc.search('article').search('div#jp-post-flair').first
     text = doc.search('article').inner_html.sub(element.to_s, "").sub(data, "").sub(doc.search('section.entry').first.first_element_child.to_s, "")
     begin
       element = element.next_element
       text = text.sub(element.to_s, "")
     end while !element.next_element.nil?
+    graph.each do |elem|
+      text = text.sub(elem.to_s, "")
+    end
     text = text.sub(/<p><span.*?><\/span><\/p>/, "").gsub(/^\s*/, "").gsub(/\s*$/, "").gsub("\n", "")
     MAP.each do |k,v|
       text = text.gsub(k,v)
     end
-    text << "Источник: #{link}"
+    text.sub("Подписывайтесь на новые видео нашего канала!\n\n", "") << "Источник: #{link}"
   end
 end
