@@ -3,7 +3,7 @@ class TokensController < ApplicationController
   end
 
   def get_news
-    @news_html = NewscryptocoinParser.parse_news(news_params[:link])
+    @news_html = CryptorussiaParser.parse_news(news_params[:link])
     render 'get_news'
   end
 
