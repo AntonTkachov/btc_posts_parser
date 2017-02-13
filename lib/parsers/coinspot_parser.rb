@@ -28,7 +28,8 @@ class CoinspotParser
   /<p.*?>/ => "",
   "</p>" => "\n\n",
   "<h6>" => "",
-  "</h6>" => "\n\n"
+  "</h6>" => "\n\n",
+  "&amp;" => "&"
   }
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))

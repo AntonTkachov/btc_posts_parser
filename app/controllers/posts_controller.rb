@@ -35,6 +35,8 @@ class PostsController < ApplicationController
       CoinspotParser.parse_news(link)
     when /invest-rating\.ru/
       InvestRatingParser.parse_news(link)
+    when /newscryptocoin\.com/
+      NewscryptocoinParser.parse_news(link)
     end
   end
 end

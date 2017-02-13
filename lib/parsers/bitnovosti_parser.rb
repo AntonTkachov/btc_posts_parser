@@ -49,7 +49,8 @@ class BitnovostiParser
   "<b>" => "",
   "</b>" => "",
   /<div.*>/ => "",
-  "</div>" => ""
+  "</div>" => "",
+  "&amp;" => "&"
   }
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))

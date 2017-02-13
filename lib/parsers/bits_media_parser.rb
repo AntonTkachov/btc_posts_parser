@@ -34,7 +34,8 @@ class BitsMediaParser
   /<i.*?>/ => "",
   "</i>" => "",
   /<script.*?>/ => "",
-  "</script>" => ""
+  "</script>" => "",
+  "&amp;" => "&"
   }
 
   def self.parse_news(link)
