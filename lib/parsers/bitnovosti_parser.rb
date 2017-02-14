@@ -15,6 +15,7 @@ class BitnovostiParser
   "</h2>" => " =\n\n",
   "<h3>" => "= ",
   "</h3>" => " =\n\n",
+  "<p></p>" => "",
   /<p>\u00A0<\/p>/ => "",
   /<p><img.*?><\/p>/ => "",
   /<p><a.*?><img.*?><\/a><\/p>/ => "",
@@ -57,6 +58,7 @@ class BitnovostiParser
     data = doc.search('article').search('p.postmetadata').to_s
     graph = doc.search('article').search('div.wp-caption')
     element = doc.search('article').search('div#jp-post-flair').first
+    graph += doc.search('article').search('img')
     text = doc.search('article').inner_html.sub(element.to_s, "").sub(data, "").sub(doc.search('section.entry').first.first_element_child.to_s, "")
     begin
       element = element.next_element
