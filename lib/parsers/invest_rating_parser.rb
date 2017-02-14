@@ -24,7 +24,9 @@ class InvestRatingParser
   "</li></ul>" => "\n\n",
   /<p.*?>/ => "",
   "</p>" => "\n\n",
-  "&amp;" => "&"
+  "&amp;" => "&",
+  "&lt;" => "<",
+  "&gt;" => ">"
   }
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))

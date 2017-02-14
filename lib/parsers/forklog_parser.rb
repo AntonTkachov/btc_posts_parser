@@ -43,7 +43,9 @@ class ForklogParser
   "</script>" => "",
   "<b>" => "",
   "</b>" => "",
-  "&amp;" => "&"
+  "&amp;" => "&",
+  "&lt;" => "<",
+  "&gt;" => ">"
   }
 
   def self.parse_news(link)

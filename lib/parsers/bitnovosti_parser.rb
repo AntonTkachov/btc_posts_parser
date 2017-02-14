@@ -51,7 +51,9 @@ class BitnovostiParser
   "</b>" => "",
   /<div.*>/ => "",
   "</div>" => "",
-  "&amp;" => "&"
+  "&amp;" => "&",
+  "&lt;" => "<",
+  "&gt;" => ">"
   }
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))
@@ -59,7 +61,7 @@ class BitnovostiParser
     graph = doc.search('article').search('div.wp-caption')
     element = doc.search('article').search('div#jp-post-flair').first
     graph += doc.search('article').search('img')
-    text = doc.search('article').inner_html.sub(element.to_s, "").sub(data, "").sub(doc.search('section.entry').first.first_element_child.to_s, "")
+    text = doc.search('article').inner_html.sub(element.to_s, "").sub(data, "")
     begin
       element = element.next_element
       text = text.sub(element.to_s, "")
