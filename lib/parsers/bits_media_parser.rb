@@ -29,7 +29,7 @@ class BitsMediaParser
   /<a.*?>/ => "",
   "</a>" => "",
   /<img.*?>/ => "",
-  "<blockquote>" => "",
+  /<blockquote.*?>/ => "",
   "</blockquote>" => "",
   /<i.*?>/ => "",
   "</i>" => "",

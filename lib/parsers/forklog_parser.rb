@@ -43,6 +43,8 @@ class ForklogParser
   "</script>" => "",
   "<b>" => "",
   "</b>" => "",
+  /<iframe.*?>/ => "",
+  "</iframe>" => "",
   "&amp;" => "&",
   "&lt;" => "<",
   "&gt;" => ">"

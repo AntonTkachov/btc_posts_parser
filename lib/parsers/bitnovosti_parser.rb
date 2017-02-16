@@ -61,6 +61,7 @@ class BitnovostiParser
     graph = doc.search('article').search('div.wp-caption')
     element = doc.search('article').search('div#jp-post-flair').first
     graph += doc.search('article').search('img')
+    graph += doc.search('article').search('div.embed-twitter')
     text = doc.search('article').inner_html.sub(element.to_s, "").sub(data, "")
     begin
       element = element.next_element
