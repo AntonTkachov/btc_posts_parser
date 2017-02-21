@@ -1,0 +1,15 @@
+<link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/ >
+<script src="/jquery.js"></script>
+<script src="/jquery.datetimepicker.full.min.js"></script>
+
+<% if flash[:message] %>
+  <p class="alert alert-success center_top"><%= flash[:message] %></p>
+<% end %>
+
+<div class="center">
+  <%= form_for :post, url: posts_path do |f| %>
+    <%= f.text_field :link, class: 'form-control', placeholder: 'Link' %>
+    <%= f.text_field :time, class: 'form-control', autocomplete: 'off', placeholder: 'Time', id: 'datetimepicker', onclick: "jQuery('#datetimepicker').datetimepicker();"%>
+    <%= f.submit 'Publish post', class: 'btn btn-default' %>
+  <% end %>
+</div>

@@ -1,0 +1,9 @@
+<% if flash[:message] %>
+  <p class="alert alert-warning center_top"><%= flash[:message] %></p>
+<% end %>
+<%= link_to "Get Token", '/auth/facebook', class: 'btn btn-info btn-lg center' %>
+
+<%= form_for :news, url: tokens_get_news_path, method: :get do |f| %>
+    <%= f.text_field :link, class: 'form-control', placeholder: 'Link' %>
+    <%= f.submit 'Get News', class: 'btn btn-default' %>
+<% end %>
