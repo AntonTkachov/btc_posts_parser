@@ -8,12 +8,11 @@ class ForklogParser
   "</section>" => "",
   /<a.*?>/ => "",
   "</a>" => "",
-  /<div.*>/ => "",
-  "</div>" => "",
   /<i.*?>/ => "",
   "</i>" => ""
   }
   MAP = {
+  "<p></p>" => "",
   "<h1>" => "===== ",
   "</h1>" => " =====\n\n",
   "<h3>" => "= ",
@@ -37,14 +36,13 @@ class ForklogParser
   "<em>" => "",
   "</em>" => "\n\n",
   /<img.*?>/ => "",
+  "<br>" => "\n",
   "<blockquote>" => "",
   "</blockquote>" => "",
   /<script.*?>/ => "",
   "</script>" => "",
   "<b>" => "",
   "</b>" => "",
-  /<iframe.*?>/ => "",
-  "</iframe>" => "",
   "&amp;" => "&",
   "&lt;" => "<",
   "&gt;" => ">"
@@ -53,6 +51,11 @@ class ForklogParser
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))
     text = doc.search('section#article_content').inner_html
+    for_removal = doc.search('section#article_content').search('div')
+    for_removal += doc.search('section#article_content').search('iframe')
+    for_removal.each do |elem|
+      text = text.sub(elem.to_s, "")
+    end
     MAP1.each do |k,v|
       text = text.gsub(k,v)
     end
