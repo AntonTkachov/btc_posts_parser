@@ -3,6 +3,9 @@ require 'open-uri'
 
 class CoinspotParser
   MAP = {
+  /<img.*?>/ => "",
+  "<p></p>" => "",
+  "</cite></p>" => "\n\n",
   /<div.*?>/ => "",
   "</div>" => "",
   /<h2.*?>/ => "= ",
@@ -18,7 +21,6 @@ class CoinspotParser
   "</em>" => "",
   "<strong>" => "",
   "</strong>" => "",
-  /<img.*?>/ => "",
   "<ol><li>" => "- ",
   "<ul><li>" => "- ",
   "</li><li>" => "\n- ",
@@ -26,8 +28,7 @@ class CoinspotParser
   "</li></ul>" => "\n\n",
   /<span.*?>/ => "",
   "</span>" => "",
-  /<\/p><p.*?><cite>/ => " ",
-  "</cite></p>" => "\n\n",
+  "<\/p><p><cite>" => " ",
   "</p><blockquote><p>" => " ",
   "</p></blockquote>" => "\n\n",
   /<p.*?>/ => "",
@@ -36,7 +37,8 @@ class CoinspotParser
   "</h6>" => "\n\n",
   "&amp;" => "&",
   "&lt;" => "<",
-  "&gt;" => ">"
+  "&gt;" => ">",
+  /<\/p><p.*?><cite>/ => " "
   }
   def self.parse_news(link)
     doc = Nokogiri::HTML(open(link))
@@ -45,6 +47,8 @@ class CoinspotParser
     eof = doc.search('div.blog-content').search('p.eof').to_s
     divs = doc.search('div.blog-content').search('div.wp-caption')
     divs += doc.search('div.blog-content').search('div.blog-info-wrapper')
+    divs += doc.search('div.blog-content').search('em')
+    divs += doc.search('div.blog-content').search('h6')
     divs.each do |elem|
       text = text.sub(elem.to_s, "")
     end
