@@ -2,11 +2,6 @@ class TokensController < ApplicationController
   def new
   end
 
-  def get_news
-    @news_html = ForklogParser.parse_news(news_params[:link])
-    render 'get_news'
-  end
-
   def create
     Rails.application.secrets.page_access_token = FacebookAPI.new(request.env['omniauth.auth']['credentials']['token']).get_token_of_page
     if Rails.application.secrets.page_access_token.nil?
